@@ -13,11 +13,11 @@ const MailList = () => {
                     </div>
                 </div>
                 <div className='d-flex justify-content-center'>
-                    <nav class="navbar navbar-dark ">
-                        <div class="container-fluid">
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Your email" aria-label="Search" />
-                                <div class="p-1 bd-highlight"><button type="submit" class="btn btn-light fw-bold">Subscribe</button></div>
+                    <nav className="navbar navbar-dark ">
+                        <div className="container-fluid">
+                            <form className="d-flex">
+                                <input className="form-control me-2" type="search" placeholder="Your email" aria-label="Search" />
+                                <div className="p-1 bd-highlight"><button type="submit" className="btn btn-light fw-bold">Subscribe</button></div>
                             </form>
                         </div>
                     </nav>

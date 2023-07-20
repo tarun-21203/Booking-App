@@ -1,16 +1,18 @@
 import { faBed, faCalendarDays, faCar, faPerson, faPlane, faTaxi } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
+import { SearchContext } from '../../context/SearchContext';
+import { AuthContext } from '../../context/AuthContext';
 
 const Header = ({ type }) => {
     const [destination, setDestination] = useState("");
     const [openDate, setOpenDate] = useState(false);
-    const [date, setDate] = useState([
+    const [dates, setDates] = useState([
         {
             startDate: new Date(),
             endDate: new Date(),
@@ -32,41 +34,46 @@ const Header = ({ type }) => {
         })
     }
 
+    const { dispatch } = useContext(SearchContext);
+
     const navigate = useNavigate();
     const handleSearch = () => {
-        navigate("/hotels", { state: { destination, date, options } });
+        dispatch({ type: "NEW_SEARCH", payload: {destination, dates, options}})
+        navigate("/hotels", { state: { destination, dates, options } });
     }
+
+    const { user } = useContext(AuthContext);
 
     return (
         <>
             <div className='bg-primary'>
-                <nav class="navbar navbar-expand-lg navbar-dark">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#"></a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
+                <nav className="navbar navbar-expand-lg navbar-dark">
+                    <div className="container-fluid">
+                        <a className="navbar-brand" href="#"></a>
+                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white pb-4">
-                                <li class="nav-item d-flex ms-4 align-items-center ps-2 border border-white border-3">
+                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul className="navbar-nav me-auto mb-2 mb-lg-0 text-white pb-4">
+                                <li className="nav-item d-flex ms-4 align-items-center ps-2 border border-white border-3">
                                     <FontAwesomeIcon icon={faBed} />
-                                    <a class="nav-link fw-bolder text-white ms-1 " href="#">Stays</a>
+                                    <a className="nav-link fw-bolder text-white ms-1 " href="#">Stays</a>
                                 </li>
-                                <li class="nav-item d-flex ms-4 align-items-center">
+                                <li className="nav-item d-flex ms-4 align-items-center">
                                     <FontAwesomeIcon icon={faPlane} />
-                                    <a class="nav-link fw-bolder text-white ms-1" href="#">Flights</a>
+                                    <a className="nav-link fw-bolder text-white ms-1" href="#">Flights</a>
                                 </li>
-                                <li class="nav-item d-flex ms-4 align-items-center">
+                                <li className="nav-item d-flex ms-4 align-items-center">
                                     <FontAwesomeIcon icon={faCar} />
-                                    <a class="nav-link fw-bolder text-white ms-1" href="#">Car Rentals</a>
+                                    <a className="nav-link fw-bolder text-white ms-1" href="#">Car Rentals</a>
                                 </li>
-                                <li class="nav-item d-flex ms-4 align-items-center">
+                                <li className="nav-item d-flex ms-4 align-items-center">
                                     <FontAwesomeIcon icon={faBed} />
-                                    <a class="nav-link fw-bolder text-white ms-1" href="#">Attractions</a>
+                                    <a className="nav-link fw-bolder text-white ms-1" href="#">Attractions</a>
                                 </li>
-                                <li class="nav-item d-flex ms-4 align-items-center">
+                                <li className="nav-item d-flex ms-4 align-items-center">
                                     <FontAwesomeIcon icon={faTaxi} />
-                                    <a class="nav-link fw-bolder text-white ms-1" href="#">Airport Taxis</a>
+                                    <a className="nav-link fw-bolder text-white ms-1" href="#">Airport Taxis</a>
                                 </li>
                             </ul>
                         </div>
@@ -83,33 +90,33 @@ const Header = ({ type }) => {
                         Get rewarded for your travels - unlock instant savings of 10% or more with a free booking account.
                     </div>
 
-                    <div className='container pb-5'>
-                        <button type="button" class="btn btn-light fw-bold">Sign in / Register</button>
-                    </div>
+                    {!user && <div className='container pb-5'>
+                        <button type="button" className="btn btn-light fw-bold">Sign in / Register</button>
+                    </div>}
 
                     <div className='container'>
-                        <div class="row bg-light border border-warning border-4 p-2">
-                            <div class="col d-flex align-items-center">
+                        <div className="row bg-light border border-warning border-4 p-2">
+                            <div className="col d-flex align-items-center">
                                 <FontAwesomeIcon icon={faBed} />
-                                <input class="form-control ms-2" type="search" onChange={e => setDestination(e.target.value)} placeholder="Search" aria-label="Search" />
+                                <input className="form-control ms-2" type="search" onChange={e => setDestination(e.target.value)} placeholder="Search" aria-label="Search" />
                             </div>
-                            <div class="col d-flex align-items-center text-muted ">
+                            <div className="col d-flex align-items-center text-muted ">
                                 <FontAwesomeIcon icon={faCalendarDays} />
-                                <span onClick={() => setOpenDate(!openDate)} class="navbar-brand ms-2">{`${format(date[0].startDate, "dd/MM/yyyy")} to ${format(date[0].endDate, "dd/MM/yyyy")}`}</span>
+                                <span onClick={() => setOpenDate(!openDate)} className="navbar-brand ms-2">{`${format(dates[0].startDate, "dd/MM/yyyy")} to ${format(dates[0].endDate, "dd/MM/yyyy")}`}</span>
                                 <div className='position-absolute mt-5'>
                                     {openDate && <DateRange
                                         editableDateInputs={true}
-                                        onChange={item => setDate([item.selection])}
+                                        onChange={item => setDates([item.selection])}
                                         moveRangeOnFirstSelection={false}
-                                        ranges={date}
+                                        ranges={dates}
                                         minDate={new Date()}
                                         className='position-absolute border border-dark z-2'
                                     />}
                                 </div>
                             </div>
-                            <div class="col d-flex align-items-center text-muted">
+                            <div className="col d-flex align-items-center text-muted">
                                 <FontAwesomeIcon icon={faPerson} />
-                                <span onClick={() => setOpenOptions(!openOptions)} class="navbar-brand ms-2">{`${options.adult} adult • ${options.children} children • ${options.room} room`}</span>
+                                <span onClick={() => setOpenOptions(!openOptions)} className="navbar-brand ms-2">{`${options.adult} adult • ${options.children} children • ${options.room} room`}</span>
                                 {openOptions && <div className='mt-5 position-absolute z-2'>
                                     <div className='position-absolute border border-dark bg-light ms-5'>
                                         <div className='pt-3 d-flex'>
@@ -133,8 +140,8 @@ const Header = ({ type }) => {
                                     </div>
                                 </div>}
                             </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-primary text-white fw-bolder" onClick={handleSearch}>Search</button>
+                            <div className="col">
+                                <button type="button" className="btn btn-primary text-white fw-bolder" onClick={handleSearch}>Search</button>
                             </div>
                         </div>
                     </div>

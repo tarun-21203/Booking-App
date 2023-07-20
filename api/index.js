@@ -1,11 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import authRoute from "./routes/auth.js"
-import hotelsRoute from "./routes/hotels.js"
-import roomsRoute from "./routes/rooms.js"
-import usersRoute from "./routes/users.js"
-import cookieParser from "cookie-parser"
+import authRoute from "./routes/auth.js";
+import hotelsRoute from "./routes/hotels.js";
+import roomsRoute from "./routes/rooms.js";
+import usersRoute from "./routes/users.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 dotenv.config()
@@ -34,6 +35,8 @@ mongoose.connection.on("connected", () => {
 
 
 // middlewares
+
+app.use(cors());
 
 // Cookie parser is used to parse the cookies(Cookies are simple, small files/data that are sent to client with a server request and stored on the client side. Every time the user loads the website back, this cookie is sent with the request. This helps us keep track of the user’s actions.) attached to the client request object. 
 app.use(cookieParser());
