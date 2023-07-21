@@ -6,9 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import MailList from '../../components/mailList/MailList';
 import Footer from '../../components/footer/Footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { SearchContext } from '../../context/SearchContext';
+import { AuthContext } from '../../context/AuthContext';
+import Reserve from '../../components/reserve/Reserve';
 
 const Hotel = () => {
 
@@ -71,6 +73,18 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   }
 
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [openModal, setOpenModel] = useState(false);
+
+  const handleClick = () => {
+    if (user) {
+      setOpenModel(true);
+    } else {
+      navigate("/login")
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -123,7 +137,7 @@ const Hotel = () => {
                   <h2>
                     <b>${days * data.cheapestPrice * options.room }</b> ({days} nights)
                   </h2>
-                  <button>Reserve or Book Now!</button>
+                  <button onClick={handleClick}>Reserve or Book Now!</button>
                 </div>
               </div>
             </div>
@@ -134,6 +148,7 @@ const Hotel = () => {
           <Footer />
         </>
       }
+      {openModal && <Reserve setOpen={setOpenModel} hotelId={id}/>}
     </div>
   )
 }

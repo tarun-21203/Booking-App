@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyAdmin } from "../utils/verifyToken.js";
-import { createRoom, deleteRoom, getRoom, getRooms, updateRoom } from "../controllers/room.js"
+import { createRoom, deleteRoom, getRoom, getRooms, updateRoom, updateRoomAvailability } from "../controllers/room.js"
 
 const router = express.Router();
 
@@ -27,5 +27,10 @@ router.get("/:id", getRoom);
 // ROUTE 5: Get all existing rooms using GET "/api/rooms"
 // GET ALL
 router.get("/", getRooms);
+
+
+// ROUTE 6: Update an existing room's available dates using PUT "/api/rooms/availability/:id".
+// UPDATE
+router.put("/availability/:id", updateRoomAvailability);
 
 export default router

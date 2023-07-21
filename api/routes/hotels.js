@@ -1,6 +1,6 @@
 import express from "express";
 import Hotel from "../models/Hotel.js";
-import { countByCity, countByType, createHotel, deleteHotel, getFeaturedHotels, getHotel, getHotels, updateHotel } from "../controllers/hotel.js";
+import { countByCity, countByType, createHotel, deleteHotel, getFeaturedHotels, getHotel, getHotelRooms, getHotels, updateHotel } from "../controllers/hotel.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -44,5 +44,10 @@ router.get("/countByType", countByType);
 // ROUTE 8: Get all existing featured hotels using GET "/api/hotels/featured?featured=true&limit=4"
 // GET ALL
 router.get("/featured", getFeaturedHotels);
+
+
+// ROUTE 9: Get all existing rooms of a hotel using GET "/api/hotels/room/:id"
+// GET ALL
+router.get("/room/:id", getHotelRooms);
 
 export default router

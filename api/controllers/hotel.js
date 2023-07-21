@@ -1,4 +1,5 @@
 import Hotel from "../models/Hotel.js";
+import Room from "../models/Room.js";
 
 // ROUTE 1: Create hotel using POST "/api/hotels".
 // CREATE
@@ -107,6 +108,20 @@ export const getFeaturedHotels = async (req, res, next)=> {
     try {
         const hotels = await Hotel.find({ ...others, cheapestPrice: { $gt: min | 1, $lt: max || 999 }}).limit(limit);
         res.status(200).json(hotels);
+    } catch (error) {
+        next(error);
+    }
+}
+
+// ROUTE 9: Get all existing rooms of a hotel using GET "/api/hotels/room/:id"
+// GET ALL
+export const getHotelRooms = async (req, res, next)=> {
+    try {
+        const hotel = await Hotel.findById(req.params.id);
+        const list = await Promise.all(hotel.rooms.map((room)=>{
+            return Room.findById(room);
+        }));
+        res.status(200).json(list);
     } catch (error) {
         next(error);
     }

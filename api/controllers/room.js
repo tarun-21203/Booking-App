@@ -72,3 +72,14 @@ export const getRooms = async (req, res, next)=> {
         next(error);
     }
 }
+
+// ROUTE 6: Update an existing room's available dates using PUT "/api/rooms/availability/:id".
+// UPDATE
+export const updateRoomAvailability = async (req, res, next)=> {
+    try {
+        await Room.updateOne({ "roomNumbers._id": req.params.id }, { $push: {"roomNumbers.$.unavailableDates": req.body.dates} })
+        res.status(200).json("Room has been updated");
+    } catch (error) {
+        next(error);
+    }
+}
