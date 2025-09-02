@@ -176,4 +176,4 @@ This project demonstrates the synergy between traditional web development and mo
 
 ---
 
-**SwiftBook** – Simplifying bookings with speed and ease. Plan smarter, book faster, and enjoy seamlessly! 
+**StayWise** – Empowering smarter stays with insight and value. Compare better, book wiser, and travel confidently! 
